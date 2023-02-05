@@ -15,8 +15,44 @@ The implementations are for our previous two papers:
 
 ## Introduction and Installation
 
-Please follow [maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark) to set up the environment. In this project, the Pytorch Version 1.4.0 and CUDA 10.1 are used.
+<!-- Please follow [maskrcnn-benchmark](https://github.com/facebookresearch/maskrcnn-benchmark) to set up the environment. In this project, the Pytorch Version 1.4.0 and CUDA 10.1 are used.
+ -->
+pytorch version 1.10.0 and CUDA 11.3
 
+```bash
+export INSTALL_DIR=$PWD
+
+# install pycocotools
+cd $INSTALL_DIR
+git clone https://github.com/cocodataset/cocoapi.git
+cd cocoapi/PythonAPI
+python setup.py build_ext install
+
+# install cityscapesScripts
+cd $INSTALL_DIR
+git clone https://github.com/mcordts/cityscapesScripts.git
+cd cityscapesScripts/
+python setup.py build_ext install
+
+# install apex
+cd $INSTALL_DIR
+git clone https://github.com/NVIDIA/apex.git
+cd apex
+python setup.py install --cuda_ext --cpp_ext
+
+# install PyTorch Detection maskrcnn-benchmark
+
+cd $INSTALL_DIR
+
+# the following will install the lib with
+# symbolic links, so that you can modify
+# the files if you want and won't need to
+# re-build it
+python setup.py build develop
+
+
+unset INSTALL_DIR
+```
 
 ## Data
 
