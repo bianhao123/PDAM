@@ -3,7 +3,7 @@
     "activeCommit": 0,
     "commits": [
         {
-            "activePatchIndex": 5,
+            "activePatchIndex": 6,
             "patches": [
                 {
                     "date": 1674830904153,
@@ -28,6 +28,10 @@
                 {
                     "date": 1675587159463,
                     "content": "Index: \n===================================================================\n--- \n+++ \n@@ -112,5 +112,7 @@\n \n ZY_CVPR\n data\n work_dir\n-apex\n\\ No newline at end of file\n+apex\n+inference/*.png\n+inference/*.jpg\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1675587297102,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -113,6 +113,6 @@\n ZY_CVPR\n data\n work_dir\n apex\n-inference/*.png\n-inference/*.jpg\n\\ No newline at end of file\n+inference/**/*.png\n+inference/**/.jpg\n\\ No newline at end of file\n"
                 }
             ],
             "date": 1674830904153,
