@@ -8,10 +8,11 @@ from maskrcnn_benchmark.structures.keypoint import PersonKeypoints
 from maskrcnn_benchmark.config import cfg
 
 import os
-import cv2.cv2 as cv2
+import cv2 as cv2
 from PIL import Image
 
 min_keypoints_per_image = 10
+
 
 def gt_name_to_label(img_name):
 
@@ -28,6 +29,7 @@ def gt_name_to_label(img_name):
     # sem_gt = cv2.imread(sem_path)
 
     return sem_gt
+
 
 def _count_visible_keypoints(anno):
     return sum(sum(1 for v in ann["keypoints"][2::3] if v > 0) for ann in anno)
@@ -73,7 +75,8 @@ class COCODataset(torchvision.datasets.coco.CocoDetection):
                     ids.append(img_id)
             self.ids = ids
 
-        self.categories = {cat['id']: cat['name'] for cat in self.coco.cats.values()}
+        self.categories = {cat['id']: cat['name']
+                           for cat in self.coco.cats.values()}
 
         self.json_category_id_to_contiguous_id = {
             v: i + 1 for i, v in enumerate(self.coco.getCatIds())

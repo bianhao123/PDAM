@@ -4,6 +4,7 @@
 import os
 from copy import deepcopy
 
+
 class DatasetCatalog(object):
     DATA_DIR = "datasets"
     DATASETS = {
@@ -161,7 +162,7 @@ class DatasetCatalog(object):
             "fluo2tnbc/annotations/fluo2tnbc_instance_annotations.json",
         ),
         "celltnbc_tgt_train40": (
-             "fluo2tnbc/target_images",
+            "fluo2tnbc/target_images",
             "fluo2tnbc/annotations/tnbc_instance_annotations.json",
         ),
 
@@ -172,6 +173,50 @@ class DatasetCatalog(object):
         "em_vnc_raw_train": (
             "epfl2vnc/target_images",
             "epfl2vnc/annotations/vnc_instance_annotations.json",
+        ),
+        "cell_consep2tnbc_train": (
+            "consep2tnbc/source_images",
+            "consep2tnbc/annotations/consep_instance_train.json"
+        ),
+        "cell_pannuke2tnbc_train": (
+            "pannuke2tnbc/source_images",
+            "pannuke2tnbc/annotations/pannuke_instance_train.json"
+        ),
+        "cell_pannuke2cryonuseg_train": (
+            "pannuke/train/source_images",
+            "pannuke/train/pannuke_instance_train.json"
+        ),
+        "cell_tnbc2consep_train": (
+            "tnbc/train/source_images",
+            "tnbc/train/tnbc_instance_train.json"
+        ),
+        # "cell_tnbc_train": (
+        #     "consep2tnbc/target_images",
+        #     "consep2tnbc/annotations/tnbc_instance_train.json"
+        # ),
+        "cell_tnbc_train": (
+            "tnbc/train/source_images",
+            "tnbc/train/tnbc_instance_train.json"
+        ),
+        "cell_tnbc_test": (
+            "tnbc/test/source_images",
+            "tnbc/test/tnbc_instance_test.json"
+        ),
+        "cell_cryonuseg_train": (
+            "cryonuseg/train/source_images",
+            "cryonuseg/train/cryonuseg_instance_train.json"
+        ),
+        "cell_cryonuseg_test": (
+            "cryonuseg/test/source_images",
+            "cryonuseg/test/cryonuseg_instance_test.json"
+        ),
+        "cell_consep_train": (
+            "consep/train/source_images",
+            "consep/train/consep_instance_train.json"
+        ),
+        "cell_consep_test": (
+            "consep/test/source_images",
+            "consep/test/consep_instance_test.json"
         ),
 
     }
@@ -285,7 +330,8 @@ class ModelCatalog(object):
         # we use as identifiers in the catalog Caffe2Detectron/COCO/<model_id>/<model_name>
         prefix = ModelCatalog.S3_C2_DETECTRON_URL
         dataset_tag = "keypoints_" if "keypoint" in name else ""
-        suffix = ModelCatalog.C2_DETECTRON_SUFFIX.format(dataset_tag, dataset_tag)
+        suffix = ModelCatalog.C2_DETECTRON_SUFFIX.format(
+            dataset_tag, dataset_tag)
         # remove identification prefix
         name = name[len("Caffe2Detectron/COCO/"):]
         # split in <model_id> and <model_name>
@@ -294,5 +340,6 @@ class ModelCatalog(object):
         model_name = "{}.yaml".format(model_name)
         signature = ModelCatalog.C2_DETECTRON_MODELS[name]
         unique_name = ".".join([model_name, signature])
-        url = "/".join([prefix, model_id, "12_2017_baselines", unique_name, suffix])
+        url = "/".join([prefix, model_id, "12_2017_baselines",
+                       unique_name, suffix])
         return url

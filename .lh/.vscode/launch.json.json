@@ -1,0 +1,30 @@
+{
+    "sourceFile": ".vscode/launch.json",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 3,
+            "patches": [
+                {
+                    "date": 1674820552493,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1674835176582,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -9,7 +9,10 @@\n         \"request\": \"launch\",\n         \"program\": \"${file}\",\n         \"console\": \"integratedTerminal\",\n         \"justMyCode\": false,\n-        \"cwd\": \"${fileDirname}\"\n+        \"cwd\": \"${fileDirname}\",\n+        \"args\": [\"--config-file\", \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_fluo2tnbc.yaml\",\n+            \"OUTPUT_DIR\", \"./work_dir/fluo2tnbc-models/pdam\"\n+        ]\n     }]\n }\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1674835226373,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,9 +8,9 @@\n             \"type\": \"python\",\n             \"request\": \"launch\",\n             \"program\": \"${file}\",\n             \"console\": \"integratedTerminal\",\n-            \"justMyCode\": true\n+            \"justMyCode\": fa\n         },\n         {\n             \"name\": \"Python: Current File\",\n             \"type\": \"python\",\n"
+                },
+                {
+                    "date": 1674898126210,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,9 +18,9 @@\n             \"request\": \"launch\",\n             \"program\": \"${file}\",\n             \"console\": \"integratedTerminal\",\n             \"justMyCode\": false,\n-            \"args\": [\"--config-file\", \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_consep2tnbc.yaml\",\n+            \"args\": [\"--config-file\", \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_2tnbc.yaml\",\n                 \"OUTPUT_DIR\", \"./work_dir/debug\"\n             ]\n         }\n     ]\n"
+                }
+            ],
+            "date": 1674820552493,
+            "name": "Commit-0",
+            "content": "{\n    // 使用 IntelliSense 了解相关属性。 \n    // 悬停以查看现有属性的描述。\n    // 欲了解更多信息，请访问: https://go.microsoft.com/fwlink/?linkid=830387\n    \"version\": \"0.2.0\",\n    \"configurations\": [{\n        \"name\": \"Python: Current File\",\n        \"type\": \"python\",\n        \"request\": \"launch\",\n        \"program\": \"${file}\",\n        \"console\": \"integratedTerminal\",\n        \"justMyCode\": false,\n        \"cwd\": \"${fileDirname}\"\n    }]\n}"
+        }
+    ]
+}

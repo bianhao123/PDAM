@@ -1,0 +1,50 @@
+{
+    "sourceFile": "train_gn_pdam.sh",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 8,
+            "patches": [
+                {
+                    "date": 1674831738654,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1674831741080,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -10,11 +10,11 @@\n    OUTPUT_DIR ./fluo2tnbc-models/pdam\n \n # fluo2tcga\n \n-CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n-    --config-file \"./configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_fluo2tcga.yaml\" \\\n-    OUTPUT_DIR ./fluo2tcga-models/pdam\n+# CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n+#     --config-file \"./configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_fluo2tcga.yaml\" \\\n+#     OUTPUT_DIR ./fluo2tcga-models/pdam\n \n \n # em epfl2vnc\n #\n"
+                },
+                {
+                    "date": 1674835034897,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -6,9 +6,9 @@\n \n #\n CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_fluo2tnbc.yaml\" \\\n-   OUTPUT_DIR ./fluo2tnbc-models/pdam\n+   OUTPUT_DIR ./work_dir/fluo2tnbc-models/pdam\n \n # fluo2tcga\n \n # CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n"
+                },
+                {
+                    "date": 1674897986123,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,14 +1,24 @@\n #!/usr/bin/env bash\n \n+# consep2tnbc\n+CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n+   --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_consep2tnbc.yaml\" \\\n+   OUTPUT_DIR ./work_dir/consep2tnbc-models/pdam\n \n+configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2tnbc.yaml\n \n+\n+# pannuke2tnbc\n+CUDA_VISIBLE_DEVICES=1 python tools/train_net.py \\\n+   --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_consep2tnbc.yaml\" \\\n+   OUTPUT_DIR ./work_dir/consep2tnbc-models/pdam\n # fluo2tnbc\n \n #\n-CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n-   --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_fluo2tnbc.yaml\" \\\n-   OUTPUT_DIR ./work_dir/fluo2tnbc-models/pdam\n+# CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n+#    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_fluo2tnbc.yaml\" \\\n+#    OUTPUT_DIR ./work_dir/fluo2tnbc-models/pdam\n \n # fluo2tcga\n \n # CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n"
+                },
+                {
+                    "date": 1674898000349,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,17 +1,17 @@\n #!/usr/bin/env bash\n \n # consep2tnbc\n-CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n-   --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_consep2tnbc.yaml\" \\\n-   OUTPUT_DIR ./work_dir/consep2tnbc-models/pdam\n+# CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n+#    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_consep2tnbc.yaml\" \\\n+#    OUTPUT_DIR ./work_dir/consep2tnbc-models/pdam\n \n-configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2tnbc.yaml\n \n \n+\n # pannuke2tnbc\n CUDA_VISIBLE_DEVICES=1 python tools/train_net.py \\\n-   --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_consep2tnbc.yaml\" \\\n+   --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2tnbc.yaml\" \\\n    OUTPUT_DIR ./work_dir/consep2tnbc-models/pdam\n # fluo2tnbc\n \n #\n"
+                },
+                {
+                    "date": 1674912691023,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -7,12 +7,17 @@\n \n \n \n \n-# pannuke2tnbc\n+# # pannuke2tnbc\n+# CUDA_VISIBLE_DEVICES=1 python tools/train_net.py \\\n+#    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2tnbc.yaml\" \\\n+#    OUTPUT_DIR ./work_dir/pannuke2tnbc-models/pdam\n+\n+# pannuke2cryonuseg\n CUDA_VISIBLE_DEVICES=1 python tools/train_net.py \\\n-   --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2tnbc.yaml\" \\\n-   OUTPUT_DIR ./work_dir/consep2tnbc-models/pdam\n+   --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2cryonuseg.yaml\" \\\n+   OUTPUT_DIR ./work_dir/pannuke2cryonuseg-models/pdam\n # fluo2tnbc\n \n #\n # CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n"
+                },
+                {
+                    "date": 1674914321727,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,26 +13,13 @@\n #    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2tnbc.yaml\" \\\n #    OUTPUT_DIR ./work_dir/pannuke2tnbc-models/pdam\n \n # pannuke2cryonuseg\n+# CUDA_VISIBLE_DEVICES=1 python tools/train_net.py \\\n+#    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2cryonuseg.yaml\" \\\n+#    OUTPUT_DIR ./work_dir/pannuke2cryonuseg-models/pdam\n+\n+\n+# pannuke2cryonuseg\n CUDA_VISIBLE_DEVICES=1 python tools/train_net.py \\\n    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2cryonuseg.yaml\" \\\n    OUTPUT_DIR ./work_dir/pannuke2cryonuseg-models/pdam\n-# fluo2tnbc\n-\n-#\n-# CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n-#    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_fluo2tnbc.yaml\" \\\n-#    OUTPUT_DIR ./work_dir/fluo2tnbc-models/pdam\n-\n-# fluo2tcga\n-\n-# CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n-#     --config-file \"./configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_fluo2tcga.yaml\" \\\n-#     OUTPUT_DIR ./fluo2tcga-models/pdam\n-\n\\ No newline at end of file\n-\n-# em epfl2vnc\n-#\n-#CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n-#    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_epfl2vnc.yaml\" \\\n-#    OUTPUT_DIR ./epfl2vnc-models/pdam\n"
+                },
+                {
+                    "date": 1674914331904,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -18,8 +18,8 @@\n #    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2cryonuseg.yaml\" \\\n #    OUTPUT_DIR ./work_dir/pannuke2cryonuseg-models/pdam\n \n \n-# pannuke2cryonuseg\n-CUDA_VISIBLE_DEVICES=1 python tools/train_net.py \\\n+# tnbc2consep\n+CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2cryonuseg.yaml\" \\\n    OUTPUT_DIR ./work_dir/pannuke2cryonuseg-models/pdam\n"
+                },
+                {
+                    "date": 1674914354299,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,6 +20,6 @@\n \n \n # tnbc2consep\n CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n-   --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_pannuke2cryonuseg.yaml\" \\\n-   OUTPUT_DIR ./work_dir/pannuke2cryonuseg-models/pdam\n+   --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_tnbc2consep.yaml\" \\\n+   OUTPUT_DIR ./work_dir/tnbc2consep-models/pdam\n"
+                }
+            ],
+            "date": 1674831738654,
+            "name": "Commit-0",
+            "content": "#!/usr/bin/env bash\n\n\n\n# fluo2tnbc\n\n#\nCUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n   --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_fluo2tnbc.yaml\" \\\n   OUTPUT_DIR ./fluo2tnbc-models/pdam\n\n# fluo2tcga\n\nCUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n    --config-file \"./configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_fluo2tcga.yaml\" \\\n    OUTPUT_DIR ./fluo2tcga-models/pdam\n\n\n# em epfl2vnc\n#\n#CUDA_VISIBLE_DEVICES=0 python tools/train_net.py \\\n#    --config-file \"configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_epfl2vnc.yaml\" \\\n#    OUTPUT_DIR ./epfl2vnc-models/pdam"
+        }
+    ]
+}

@@ -17,11 +17,13 @@ class BoxList(object):
     """
 
     def __init__(self, bbox, image_size, mode="xyxy"):
-        device = bbox.device if isinstance(bbox, torch.Tensor) else torch.device("cpu")
+        device = bbox.device if isinstance(
+            bbox, torch.Tensor) else torch.device("cpu")
         bbox = torch.as_tensor(bbox, dtype=torch.float32, device=device)
         if bbox.ndimension() != 2:
             raise ValueError(
-                "bbox should have 2 dimensions, got {}".format(bbox.ndimension())
+                "bbox should have 2 dimensions, got {}".format(
+                    bbox.ndimension())
             )
         if bbox.size(-1) != 4:
             raise ValueError(
@@ -96,7 +98,8 @@ class BoxList(object):
             (width, height).
         """
 
-        ratios = tuple(float(s) / float(s_orig) for s, s_orig in zip(size, self.size))
+        ratios = tuple(float(s) / float(s_orig)
+                       for s, s_orig in zip(size, self.size))
         if ratios[0] == ratios[1]:
             ratio = ratios[0]
             scaled_box = self.bbox * ratio
@@ -154,7 +157,8 @@ class BoxList(object):
             transposed_ymax = image_height - ymin
 
         transposed_boxes = torch.cat(
-            (transposed_xmin, transposed_ymin, transposed_xmax, transposed_ymax), dim=-1
+            (transposed_xmin, transposed_ymin,
+             transposed_xmax, transposed_ymax), dim=-1
         )
         bbox = BoxList(transposed_boxes, self.size, mode="xyxy")
         # bbox._copy_extra_fields(self)
@@ -179,7 +183,8 @@ class BoxList(object):
 
         # TODO should I filter empty boxes here?
         if False:
-            is_empty = (cropped_xmin == cropped_xmax) | (cropped_ymin == cropped_ymax)
+            is_empty = (cropped_xmin == cropped_xmax) | (
+                cropped_ymin == cropped_ymax)
 
         cropped_box = torch.cat(
             (cropped_xmin, cropped_ymin, cropped_xmax, cropped_ymax), dim=-1
@@ -213,10 +218,13 @@ class BoxList(object):
 
     def clip_to_image(self, remove_empty=True):
         TO_REMOVE = 1
-        self.bbox[:, 0].clamp_(min=0, max=self.size[0] - TO_REMOVE)
-        self.bbox[:, 1].clamp_(min=0, max=self.size[1] - TO_REMOVE)
-        self.bbox[:, 2].clamp_(min=0, max=self.size[0] - TO_REMOVE)
-        self.bbox[:, 3].clamp_(min=0, max=self.size[1] - TO_REMOVE)
+        # bbox = self.bbox
+        # bbox.clamp_(min=0, max=self.size[0] - TO_REMOVE)
+        self.bbox = torch.clamp(self.bbox, min=0, max=255)
+        # bbox[:, 0].clamp_(min=0, max=self.size[0] - TO_REMOVE)
+        # bbox[:, 1].clamp_(min=0, max=self.size[1] - TO_REMOVE)
+        # bbox[:, 2].clamp_(min=0, max=self.size[0] - TO_REMOVE)
+        # bbox[:, 3].clamp_(min=0, max=self.size[1] - TO_REMOVE)
         if remove_empty:
             box = self.bbox
             keep = (box[:, 3] > box[:, 1]) & (box[:, 2] > box[:, 0])
@@ -227,7 +235,8 @@ class BoxList(object):
         box = self.bbox
         if self.mode == "xyxy":
             TO_REMOVE = 1
-            area = (box[:, 2] - box[:, 0] + TO_REMOVE) * (box[:, 3] - box[:, 1] + TO_REMOVE)
+            area = (box[:, 2] - box[:, 0] + TO_REMOVE) * \
+                (box[:, 3] - box[:, 1] + TO_REMOVE)
         elif self.mode == "xywh":
             area = box[:, 2] * box[:, 3]
         else:
@@ -243,7 +252,8 @@ class BoxList(object):
             if self.has_field(field):
                 bbox.add_field(field, self.get_field(field))
             elif not skip_missing:
-                raise KeyError("Field '{}' not found in {}".format(field, self))
+                raise KeyError(
+                    "Field '{}' not found in {}".format(field, self))
         return bbox
 
     def __repr__(self):

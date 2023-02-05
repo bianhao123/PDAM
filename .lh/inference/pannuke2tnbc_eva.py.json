@@ -1,0 +1,26 @@
+{
+    "sourceFile": "inference/pannuke2tnbc_eva.py",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 2,
+            "patches": [
+                {
+                    "date": 1674908713850,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1674908727133,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -75,8 +75,8 @@\n     print('average pq score of this method is: ', pq_avg, ' ', pq_std)\n \n \n if __name__ == \"__main__\":\n-    pred_root = 'pannuke2tnbc'\n-    gt_root = ''\n+    pred_root = '/data111/bianhao/code/zhangye/PDAM/inference/pannuke2tnbc'\n+    gt_root = '/data111/bianhao/code/zhangye/PDAM/ZY_CVPR/tnbc/test'\n \n     evaluate_fluo2tnbc(pred_root, gt_root)\n"
+                },
+                {
+                    "date": 1674909030612,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,8 +4,9 @@\n import numpy as np\n import tifffile as tiff\n from inference.metrics import agg_jc_index, pixel_f1, remap_label, get_fast_pq\n import xlwt\n+from skimage import io\n \n \n def evaluate_fluo2tnbc(pred_root, gt_root):\n \n@@ -30,9 +31,11 @@\n     for img_name in test_imgs:\n         if img_name.endswith(\".tif\"):\n             gt_name = img_name\n             pred_ins = tiff.imread(os.path.join(pred_root, img_name))\n-            gt_ins = tiff.imread(os.path.join(gt_root, gt_name))\n+            gt_ins = np.load(os.path.join(\n+                gt_root, gt_name[:-4] + '_instance.npy')).astype(np.uint16)\n+            # gt_ins = tiff.imread(os.path.join(gt_root, gt_name))\n \n             aji_cur = agg_jc_index(gt_ins, pred_ins)\n             aji_list.append(aji_cur)\n \n"
+                }
+            ],
+            "date": 1674908713850,
+            "name": "Commit-0",
+            "content": "\n\nimport os\nimport numpy as np\nimport tifffile as tiff\nfrom inference.metrics import agg_jc_index, pixel_f1, remap_label, get_fast_pq\nimport xlwt\n\n\ndef evaluate_fluo2tnbc(pred_root, gt_root):\n\n    aji_list = []\n    f1_list = []\n    pq_list = []\n\n    wb = xlwt.Workbook()\n    ws = wb.add_sheet('Test Sheet')\n\n    counter = 0\n\n    ws.write(0, 0, 'img_name')\n    ws.write(0, 1, 'aji')\n    ws.write(0, 2, 'f1')\n    ws.write(0, 3, 'pq')\n\n    test_imgs = os.listdir(pred_root)\n\n    # for img_name in img_names:\n\n    for img_name in test_imgs:\n        if img_name.endswith(\".tif\"):\n            gt_name = img_name\n            pred_ins = tiff.imread(os.path.join(pred_root, img_name))\n            gt_ins = tiff.imread(os.path.join(gt_root, gt_name))\n\n            aji_cur = agg_jc_index(gt_ins, pred_ins)\n            aji_list.append(aji_cur)\n\n            f1_cur = pixel_f1(gt_ins, pred_ins)\n            f1_list.append(f1_cur)\n\n            gt = remap_label(gt_ins, by_size=False)\n            pred = remap_label(pred_ins, by_size=False)\n\n            pq_info_cur = get_fast_pq(gt, pred, match_iou=0.5)[0]\n            pq_cur = pq_info_cur[2]\n            pq_list.append(pq_cur)\n\n            counter = counter + 1\n\n            ws.write(counter, 0, img_name)\n            ws.write(counter, 1, aji_cur)\n            ws.write(counter, 2, f1_cur)\n            ws.write(counter, 3, pq_cur)\n\n    wb.save(pred_root + '.xls')\n\n    aji_array = np.asarray(aji_list, dtype=np.float32)\n    f1_array = np.asarray(f1_list, dtype=np.float32)\n    pq_array = np.asarray(pq_list, dtype=np.float32)\n\n    aji_avg = np.average(aji_array)\n    aji_std = np.std(aji_array)\n\n    f1_avg = np.average(f1_array)\n    f1_std = np.std(f1_array)\n\n    pq_avg = np.average(pq_array)\n    pq_std = np.std(pq_array)\n\n    print(pred_root)\n\n    print('average aji score of this method is: ', aji_avg, ' ', aji_std)\n    print('average f1 score of this method is: ', f1_avg, ' ', f1_std)\n    print('average pq score of this method is: ', pq_avg, ' ', pq_std)\n\n\nif __name__ == \"__main__\":\n    pred_root = 'pannuke2tnbc'\n    gt_root = ''\n\n    evaluate_fluo2tnbc(pred_root, gt_root)\n"
+        }
+    ]
+}

@@ -1,5 +1,5 @@
 # Copyright (c) Facebook, Inc. and its affiliates. All Rights Reserved.
-import cv2.cv2 as cv2
+import cv2
 import torch
 from torchvision import transforms as T
 
@@ -14,10 +14,11 @@ import logging
 import numpy as np
 
 
-
 logger = logging.getLogger(__name__)
 
 # This one is used to load cell data as coco style when showing the final mask
+
+
 class CellDemo(object):
     # COCO categories for pretty print
     CATEGORIES = [
@@ -32,8 +33,8 @@ class CellDemo(object):
         show_mask_heatmaps=False,
         masks_per_dim=2,
         min_image_size=224,
-        weight = None,
-        model = None,
+        weight=None,
+        model=None,
     ):
         self.cfg = cfg.clone()
         #self.cfg = cfg
@@ -130,24 +131,21 @@ class CellDemo(object):
         image = self.transforms(original_image)
         # convert to an ImageList, padded so that it is divisible by
         # cfg.DATALOADER.SIZE_DIVISIBILITY
-        image_list = to_image_list(image, self.cfg.DATALOADER.SIZE_DIVISIBILITY)
+        image_list = to_image_list(
+            image, self.cfg.DATALOADER.SIZE_DIVISIBILITY)
         image_list = image_list.to(self.device)
         # compute predictions
         with torch.no_grad():
             predictions = self.model(image_list)
 
-
         predictions = [o.to(self.cpu_device) for o in predictions]
-
 
         # always single image is passed at a time
         prediction = predictions[0]
 
-
         # reshape prediction (a BoxList) into the original image size
         height, width = original_image.shape[:-1]
         prediction = prediction.resize((width, height))
-
 
         if prediction.has_field("mask"):
             # if we have masks, paste the masks in the right position
@@ -219,12 +217,12 @@ class CellDemo(object):
             predictions (BoxList): the result of the computation by the model.
                 It should contain the field `mask` and `labels`.
         """
-        mask_list = predictions.get_field("mask").squeeze(1).numpy().transpose(1,2,0)
+        mask_list = predictions.get_field(
+            "mask").squeeze(1).numpy().transpose(1, 2, 0)
 
         composite = image
 
         return composite, mask_list
-
 
     def create_mask_montage(self, image, predictions):
         """
@@ -246,7 +244,8 @@ class CellDemo(object):
         masks = masks[:max_masks]
         # handle case where we have less detections than max_masks
         if len(masks) < max_masks:
-            masks_padded = torch.zeros(max_masks, 1, height, width, dtype=torch.uint8)
+            masks_padded = torch.zeros(
+                max_masks, 1, height, width, dtype=torch.uint8)
             masks_padded[: len(masks)] = masks
             masks = masks_padded
         masks = masks.reshape(masks_per_dim, masks_per_dim, height, width)
@@ -282,7 +281,8 @@ class CellDemo(object):
             x, y = box[:2]
             s = template.format(label, score)
             cv2.putText(
-                image, s, (x, y), cv2.FONT_HERSHEY_SIMPLEX, .5, (255, 255, 255), 1
+                image, s, (x, y), cv2.FONT_HERSHEY_SIMPLEX, .5, (255,
+                                                                 255, 255), 1
             )
 
         return image

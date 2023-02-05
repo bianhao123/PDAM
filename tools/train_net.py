@@ -11,6 +11,7 @@ import argparse
 import os
 
 import torch
+torch.autograd.set_detect_anomaly(True)
 from maskrcnn_benchmark.config import cfg
 from maskrcnn_benchmark.data import make_data_loader
 from maskrcnn_benchmark.solver import make_lr_scheduler
@@ -44,7 +45,8 @@ def train(cfg, local_rank, distributed):
     # Initialize mixed-precision training
     use_mixed_precision = cfg.DTYPE == "float16"
     amp_opt_level = 'O1' if use_mixed_precision else 'O0'
-    model, optimizer = amp.initialize(model, optimizer, opt_level=amp_opt_level)
+    model, optimizer = amp.initialize(
+        model, optimizer, opt_level=amp_opt_level)
 
     if distributed:
         model = torch.nn.parallel.DistributedDataParallel(
@@ -81,11 +83,9 @@ def train(cfg, local_rank, distributed):
         is_source=False,
     )
 
-
     # test_period = cfg.SOLVER.TEST_PERIOD
     checkpoint_period = cfg.SOLVER.CHECKPOINT_PERIOD
     da_enable = cfg.MODEL.DOMAIN_ADAPTION.ENABLE_DA
-
 
     do_train(
         cfg,
@@ -117,10 +117,12 @@ def run_test(cfg, model, distributed):
     dataset_names = cfg.DATASETS.TEST
     if cfg.OUTPUT_DIR:
         for idx, dataset_name in enumerate(dataset_names):
-            output_folder = os.path.join(cfg.OUTPUT_DIR, "inference", dataset_name)
+            output_folder = os.path.join(
+                cfg.OUTPUT_DIR, "inference", dataset_name)
             mkdir(output_folder)
             output_folders[idx] = output_folder
-    data_loaders_val = make_data_loader(cfg, is_train=False, is_distributed=distributed)
+    data_loaders_val = make_data_loader(
+        cfg, is_train=False, is_distributed=distributed)
     for output_folder, dataset_name, data_loader_val in zip(output_folders, dataset_names, data_loaders_val):
         inference(
             model,
@@ -138,10 +140,11 @@ def run_test(cfg, model, distributed):
 
 
 def main():
-    parser = argparse.ArgumentParser(description="PyTorch Object Detection Training")
+    parser = argparse.ArgumentParser(
+        description="PyTorch Object Detection Training")
     parser.add_argument(
         "--config-file",
-        default="",
+        default="configs/uda_nuclei_seg/e2e_mask_rcnn_R_101_FPN_1x_gn_consep2tnbc.yaml",
         metavar="FILE",
         help="path to config file",
         type=str,
@@ -162,7 +165,8 @@ def main():
 
     args = parser.parse_args()
 
-    num_gpus = int(os.environ["WORLD_SIZE"]) if "WORLD_SIZE" in os.environ else 1
+    num_gpus = int(os.environ["WORLD_SIZE"]
+                   ) if "WORLD_SIZE" in os.environ else 1
     args.distributed = num_gpus > 1
 
     if args.distributed:
@@ -199,7 +203,6 @@ def main():
     save_config(cfg, output_config_path)
 
     model = train(cfg, args.local_rank, args.distributed)
-
 
 
 if __name__ == "__main__":
