@@ -118,4 +118,4 @@ inference/**/*.png
 inference/**/.jpg
 inference/*/.tif
 inference/*/.png
-inference/consep2tnbc
+inference/consep2tnbc/*
