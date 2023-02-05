@@ -115,5 +115,5 @@ data
 work_dir
 apex
 inference/**/*.png
-inference/**/.jpg
-inference/**/.tif
+inference/**/*.jpg
+inference/**/*.tif
